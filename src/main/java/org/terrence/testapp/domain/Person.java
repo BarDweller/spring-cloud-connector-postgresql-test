@@ -1,10 +1,19 @@
-package org.terrence.testapp;
+package org.terrence.testapp.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Person {
 
+    @Id
     private String id;
+
     private String name;
     private int age;
+
+    public Person() {
+    }
 
     public Person(String name, int age) {
         this.name = name;

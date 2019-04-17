@@ -5,8 +5,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.terrence.testapp.Person;
-import org.terrence.testapp.PersonRepository;
+import org.terrence.testapp.domain.Person;
+import org.terrence.testapp.repositories.PersonRepository;
 
 @RestController
 public class TestRestController {
@@ -29,10 +29,10 @@ public class TestRestController {
       try {
         repo.findById(id).ifPresent(p -> repo.deleteById(p.getId())); // if there is an existing Person with the id then
                                                                       // delete it
-        repo.insert(test);
+        repo.save(test);
       } catch (Exception d) {
         System.out.println("exception caught: creating new object");
-        repo.insert(test);
+        repo.save(test);
       }
 
       // get the Person by ID and make sure the name and id matche
@@ -41,8 +41,10 @@ public class TestRestController {
           || (check.getId() != null && check.getId().equals(test.getId())))
           && ((check.getName() == null && test.getName() == null)
               || (check.getName() != null && check.getName().equals(test.getName())))) {
+        repo.deleteById(id);
         return "test passed: objects matched!";
       } else {
+        repo.deleteById(id);
         return "test failed: ojects do not match";
       }
     } catch (Exception e) {
